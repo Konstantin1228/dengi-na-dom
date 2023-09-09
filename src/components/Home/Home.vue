@@ -3,36 +3,40 @@ import { CharacterData } from "./types";
 import HomeCharacter from "./HomeCharacter.vue";
 import Input from "../ui/input/Input.vue";
 import { appEnv } from "../../../env/env";
+import Select from '../shared/select/Select.vue'
+import { characterStore } from '@/stores/store'
 
 const characters = ref<CharacterData>();
+const store = characterStore()
 
 const { data: newCharacters } = await useFetch<CharacterData>("https://rickandmortyapi.com/api/character/?page=1");
 characters.value = newCharacters.value!;
 
-onMounted(async () => {
-    window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-        console.log(bottomOfWindow);
-        if (bottomOfWindow) loadData();
-    };
+onMounted(() => {
+    window.addEventListener('scroll', scrollHandler)
+    // store.updateCharacterData(characters.value!)
 });
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', scrollHandler)
+})
 
 const name = ref("");
 const species = ref("");
 
-const handleInput = async () => {
+watch([name, species], async () => {
     const nameVal = name.value;
     const speciesVal = species.value;
     const { data: newCharacters } = await useFetch<CharacterData>(`${appEnv.api}/character/?page=1${(speciesVal !== "" ? "&status=" + speciesVal : "") + (nameVal !== "" ? "&name=" + nameVal : "")}`);
     characters.value = newCharacters.value!;
-};
+    // store.updateCharacterData(newCharacters.value!)
+})
 
-const handleSelect = async () => {
-    const nameVal = name.value;
-    const speciesVal = species.value;
-    const { data: newCharacters } = await useFetch<CharacterData>(`${appEnv.api}/character/?page=1${(speciesVal !== "" ? "&status=" + speciesVal : "") + (nameVal !== "" ? "&name=" + nameVal : "")}`);
-    characters.value = newCharacters.value!;
-};
+const scrollHandler = () => {
+    let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+    console.log(bottomOfWindow);
+    if (bottomOfWindow) loadData();
+}
 
 const loadData = async () => {
     const nextLink = characters.value?.info.next;
@@ -41,11 +45,12 @@ const loadData = async () => {
     characters.value!.info.next = newCharacters.value!.info.next;
     characters.value!.results.push(...newCharacters.value!.results);
 };
+
 </script>
 <template>
     <form class="mb-5 flex gap-5">
-        <input class="p-3 border-black border border-solid rounded outline-none" type="text" v-model="name" @input="handleInput" placeholder="Имя персонажа" />
-        <select v-model="species" @change="handleSelect">
+        <input class="p-3 border-black border border-solid rounded outline-none" type="text" v-model="name" placeholder="Имя персонажа" />
+        <select v-model="species" class="outline-none border-black border border-solid p-3 rounded w-fit">
             <option selected disabled value="">Статус</option>
             <option value="alive">Жив</option>
             <option value="dead">Мертв</option>
@@ -54,15 +59,7 @@ const loadData = async () => {
     </form>
     <div class="grid grid-cols-2 gap-3">
         <h1 v-if="characters?.results.length === 0">Персонажены не найдены</h1>
-        <HomeCharacter
-            v-if="characters?.results"
-            v-for="({ name, species, image, episode, id }, index) in characters.results"
-            :key="index"
-            :name="name"
-            :species="species"
-            :image="image"
-            :episodes="episode"
-            :id="id"
-        />
+        <HomeCharacter v-if="characters?.results" v-for="({ name, species, image, episode, id }, index) in characters.results" :key="index" :name="name" :species="species" :image="image"
+            :episodes="episode" :id="id" />
     </div>
 </template>

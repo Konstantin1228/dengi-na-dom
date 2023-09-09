@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "fs";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  dev: true,
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt',],
   pinia: {
     autoImports: ['defineStore', 'acceptHMRUpdate'],
