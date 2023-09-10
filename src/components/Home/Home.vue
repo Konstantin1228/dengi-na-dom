@@ -6,35 +6,41 @@ import { appEnv } from "../../../env/env";
 import Select from '../shared/select/Select.vue'
 import { characterStore } from '@/stores/store'
 
-const characters = ref<CharacterData>();
 const store = characterStore()
+const characters = ref<CharacterData | null>(store.characterData);
 
-const { data: newCharacters } = await useFetch<CharacterData>("https://rickandmortyapi.com/api/character/?page=1");
-characters.value = newCharacters.value!;
+const name = ref("");
+const species = ref("");
+const errorMsg = ref<string | null>(null)
+
+if (characters.value === null) {
+    const { data: newCharacters } = await useFetch<CharacterData>("https://rickandmortyapi.com/api/character/?page=1")
+    characters.value = newCharacters.value!
+}
 
 onMounted(() => {
     window.addEventListener('scroll', scrollHandler)
-    // store.updateCharacterData(characters.value!)
+    if (!store.characterData) store.updateCharacterData(characters.value!)
 });
 
 onUnmounted(() => {
     window.removeEventListener('scroll', scrollHandler)
 })
 
-const name = ref("");
-const species = ref("");
-
 watch([name, species], async () => {
     const nameVal = name.value;
     const speciesVal = species.value;
-    const { data: newCharacters } = await useFetch<CharacterData>(`${appEnv.api}/character/?page=1${(speciesVal !== "" ? "&status=" + speciesVal : "") + (nameVal !== "" ? "&name=" + nameVal : "")}`);
+    const { data: newCharacters, pending, error } = await useFetch<CharacterData>(
+        `${appEnv.api}/character/?page=1${(speciesVal !== "" ? "&status=" + speciesVal : "") + (nameVal !== "" ? "&name=" + nameVal : "")}`
+    );
     characters.value = newCharacters.value!;
-    // store.updateCharacterData(newCharacters.value!)
+    const errorVal = error.value
+    if (errorVal) errorMsg.value = 'Персонаж не найден!'
+    else errorMsg.value = null
 })
 
 const scrollHandler = () => {
     let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-    console.log(bottomOfWindow);
     if (bottomOfWindow) loadData();
 }
 
@@ -57,6 +63,7 @@ const loadData = async () => {
             <option value="unknown">Неизвестный</option>
         </select>
     </form>
+    <h1 v-if="errorMsg" class="text-lg">{{ errorMsg }}</h1>
     <div class="grid grid-cols-2 gap-3">
         <h1 v-if="characters?.results.length === 0">Персонажены не найдены</h1>
         <HomeCharacter v-if="characters?.results" v-for="({ name, species, image, episode, id }, index) in characters.results" :key="index" :name="name" :species="species" :image="image"

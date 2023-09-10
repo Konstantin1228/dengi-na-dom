@@ -1,63 +1,23 @@
-# Nuxt 3 Minimal Starter
+# Это тестовое задание от компании Деньги на дом🌍
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Процесс запуска проекта🚀
 
-## Setup
+### Для начала нужно склонировать репозиторий, это делается с помощью команды ниже🔍
 
-Make sure to install the dependencies:
+```
+git clone https://github.com/Konstantin1228/dengi-na-dom
+```
 
-```bash
-# npm
+### Далее нужно установить все зависимости в проект, для этого следует прописать команду ниже 💻
+
+```
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
 ```
 
-## Development Server
+### Чтобы запустить проект, нужно прописать команду ниже💻
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+```
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
 ```
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Спасибо, что уделили мне время. Я надеюсь, вам понравилось выполненное мной тестовое задание.⭐️

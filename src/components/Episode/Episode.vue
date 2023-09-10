@@ -6,10 +6,9 @@ import BackIcon from '../../../assets/back-icon.svg'
 import Loader from '../shared/loader/Loader.vue'
 
 const episodeId = useRoute().params.episode
-const router = useRouter()
 
-const episode = ref<Episode>()
-const errorMsg = ref('')
+const episode = ref<Episode>() 
+const errorMsg = ref<string|null>(null)
 const personImages = ref<{ personLink: string; imageUrl: string; }[]>([])
 
 const { data: episodeData, error, pending } = await useFetch<Episode>(`${appEnv.api}/episode/${+episodeId}`,)
@@ -25,6 +24,7 @@ if (!errorMsg.value) personImages.value = await Promise.all(
         }
     }),
 )
+
 </script>
 <template>
     <button @click="$router.back()">
