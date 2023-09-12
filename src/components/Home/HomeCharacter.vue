@@ -2,7 +2,7 @@
 import { HomeCharacterProps } from "./types";
 const props = defineProps<HomeCharacterProps>();
 
-</script>
+</script> 
 
 <template>
     <div class="flex gap-4 shadow p-1 justify-between rounded">

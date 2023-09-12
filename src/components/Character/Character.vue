@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { appEnv } from "../../../env/env";
+import { appEnv } from "@/env/";
+
 import { Character } from "./types";
-import BackIcon from "../../../assets/back-icon.svg";
-import Loader from '../shared/loader/Loader.vue'
+
+import BackIcon from "@/assets/back-icon.svg";
+
+import Loader from '@/src/components/shared/loader/Loader.vue'
 
 const characterId = useRoute().params.character;
 const character = ref<Character>();
@@ -28,3 +31,4 @@ character.value = characterData.value!;
         </div>
     </div>
 </template>
+../../../env

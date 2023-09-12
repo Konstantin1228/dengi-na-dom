@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { CharacterData } from "./types";
-import HomeCharacter from "./HomeCharacter.vue";
-import Input from "../ui/input/Input.vue";
-import { appEnv } from "../../../env/env";
-import Select from '../shared/select/Select.vue'
+
 import { characterStore } from '@/stores/store'
+
+import { appEnv } from "@/env";
+
+import HomeCharacter from "./HomeCharacter.vue";
+import Input from "@/src/components/shared/Input.vue";
 
 const store = characterStore()
 const characters = ref<CharacterData | null>(store.characterData);
@@ -70,3 +72,4 @@ const loadData = async () => {
             :episodes="episode" :id="id" />
     </div>
 </template>
+../../../env~/env

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { appEnv } from '../../../env/env'
+import { appEnv } from '@/env/'
+
 import { Episode } from './types'
-import { Character } from '../Character/types'
-import BackIcon from '../../../assets/back-icon.svg'
-import Loader from '../shared/loader/Loader.vue'
+import { Character } from '@/src/components/Character/types'
+
+import BackIcon from '@/assets/back-icon.svg'
+
+import Loader from '@/src/components/shared/loader/Loader.vue'
 
 const episodeId = useRoute().params.episode
 
@@ -43,3 +46,4 @@ if (!errorMsg.value) personImages.value = await Promise.all(
         </div>
     </div>
 </template>
+../../../env

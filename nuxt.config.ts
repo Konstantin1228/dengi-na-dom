@@ -5,12 +5,12 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Деньги на дом тестовое'
-    }
+    } 
   },
   dev: true,
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
+  modules: [ 
+    '@nuxtjs/tailwindcss', 
+    '@pinia/nuxt',    
     '@pinia-plugin-persistedstate/nuxt',
   ],
   pinia: {
